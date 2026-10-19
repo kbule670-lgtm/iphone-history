@@ -47,7 +47,7 @@
 
       /* ---------- Hero ---------- */
       .hero{
-        min-height:92svh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+        min-height:92vh; min-height:92svh; display:flex; flex-direction:column; justify-content:center; align-items:center;
         text-align:center; padding:72px 24px 40px; position:relative;
         background:
           radial-gradient(60% 46% at 50% 30%, var(--stage-glow), transparent 70%),
@@ -70,7 +70,7 @@
       @keyframes drop{0%{transform:translateY(0); opacity:1} 60%{transform:translateY(13px); opacity:0} 100%{transform:translateY(0); opacity:0}}
 
       /* ---------- Stage ---------- */
-      #stage-wrap{position:relative; height:100svh;}
+      #stage-wrap{position:relative; height:100vh; height:100svh;} /* 老浏览器不支持 svh 时回退到 vh，否则舞台高度塌成 0、手机算出 0px 宽度 */
       .stage{
         position:relative; height:100%; overflow:hidden;
         display:flex; flex-direction:column;
@@ -1202,8 +1202,8 @@
       current += (target - current) * (reduced ? 1 : 0.088);
       if(Math.abs(target - current) < 0.0004) current = target;
       const base = Math.round(current);
-      const w = stage3d.clientWidth;
-      const h = stage3d.clientHeight;
+      const w = stage3d.clientWidth || window.innerWidth;
+      const h = stage3d.clientHeight || Math.round(window.innerHeight * 0.62); /* 兜底：老浏览器下舞台高度塌成 0 时，不让手机算出 0px 宽度 */
       const spread = Math.min(w * 0.46, 430);
       slots.forEach((el, s) => {
         const idx = base - 1 + s;
